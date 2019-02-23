@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.lang.Double.parseDouble;
+
 public class MunroLibrary {
 
     ArrayList<Munro> munros;
@@ -13,23 +15,25 @@ public class MunroLibrary {
 
         this.csvFileName = fileName;
         this.munros = new ArrayList<>();
-//        this.munros = getData();
+        this.munros = getData();
 
 
     }
 
-    public void getData(){
+    public ArrayList<Munro> getData(){
 
 
         String pathName = this.csvFileName;
         List<List<String>> csvData = new ArrayList<>();
         try (Scanner scanner = new Scanner(new File("./" + this.csvFileName));) {
             while (scanner.hasNextLine()) {
-                csvData.add(getRecordFromLine(scanner.nextLine()));
+                csvData.add(this.getRecordFromLine(scanner.nextLine()));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        //TODO: Work out why only approx 181 entries are being imported. Probably memory limitation of List.
 
 //        The following was used while experimenting with the results from the csv file.
 //        System.out.println(csvData.get(1).get(0));
@@ -38,9 +42,10 @@ public class MunroLibrary {
 //        System.out.println(csvData.get(8));
 //        System.out.println("category "+ csvData.get(8).get(18));
 //        System.out.println("no category " + csvData.get(8).get(19));
-//        System.out.println("post 1997 " + csvData.get(8).get(28));
+//        System.out.println("post 1997 " + csvData.get(8).get(27));
+//        System.out.println(csvData.get(181));
 
-        
+        return this.generateMunros(csvData);
 
     }
 
@@ -53,7 +58,41 @@ public class MunroLibrary {
             }
         }
         return values;
+    }
+
+    private ArrayList<Munro> generateMunros(List<List<String>> csvData) {
+
+        // This first section should circumvent issues with new csv files having different column order,
+        // provided the naming is the same. It also removes the first entry.
+        // NOTE: Need to add 1 for now, due to presence of comma in some fields causing extra columns.
+        // TODO: Compensate for commas in field entries.
+
+        List<String> columnHeads = csvData.get(0);
+        int nameIndex = columnHeads.indexOf("Name") + 1;
+        int heightIndex = columnHeads.indexOf("Height (m)") + 1;
+        int categoryIndex = columnHeads.indexOf("Post 1997") + 1;
+        int gridIndex = columnHeads.indexOf("Grid Ref") + 1;
+        csvData.remove(0);
+
+        ArrayList<Munro> munrosData = new ArrayList<>();
+
+        for (List<String> munroData : csvData) {
+
+            // Temporary limitation until memory limitation is circumvented.
+            while(munrosData.size() < 180) {
+                String munroName = munroData.get(nameIndex);
+                double munroHeight = parseDouble(munroData.get(heightIndex));
+                String munroCategory = munroData.get(categoryIndex);
+                String munroGrid = munroData.get(gridIndex);
+
+                Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
+                munrosData.add(munro);
+            }
         }
+
+        return munrosData;
+
+    }
 
     public ArrayList<Munro> getMunros() {
         return munros;
