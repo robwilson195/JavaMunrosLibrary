@@ -8,8 +8,8 @@ import static java.lang.Double.parseDouble;
 
 public class MunroLibrary {
 
-    ArrayList<Munro> munros;
-    String csvFileName;
+    private ArrayList<Munro> munros;
+    private String csvFileName;
 
     public MunroLibrary(String fileName) {
 
@@ -20,12 +20,11 @@ public class MunroLibrary {
 
     }
 
-    public ArrayList<Munro> getData(){
+    private ArrayList<Munro> getData(){
 
 
-        String pathName = this.csvFileName;
         List<List<String>> csvData = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File("./" + this.csvFileName));) {
+        try (Scanner scanner = new Scanner(new File("./" + this.csvFileName))) {
             while (scanner.hasNextLine()) {
                 csvData.add(this.getRecordFromLine(scanner.nextLine()));
             }
@@ -50,7 +49,7 @@ public class MunroLibrary {
     }
 
     private List<String> getRecordFromLine(String line) {
-        List<String> values = new ArrayList<String>();
+        List<String> values = new ArrayList<>();
         try (Scanner rowScanner = new Scanner(line)) {
             rowScanner.useDelimiter(",");
             while (rowScanner.hasNext()) {
@@ -76,18 +75,18 @@ public class MunroLibrary {
 
         ArrayList<Munro> munrosData = new ArrayList<>();
 
-        for (List<String> munroData : csvData) {
+        // Limit to 180 is a temporary limitation until memory limitation is circumvented.
+        for (int i=0; i<180; i++) {
 
-            // Temporary limitation until memory limitation is circumvented.
-            while(munrosData.size() < 180) {
-                String munroName = munroData.get(nameIndex);
-                double munroHeight = parseDouble(munroData.get(heightIndex));
-                String munroCategory = munroData.get(categoryIndex);
-                String munroGrid = munroData.get(gridIndex);
+            List<String> munroData = csvData.get(i);
 
-                Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
-                munrosData.add(munro);
-            }
+            double munroHeight = parseDouble(munroData.get(heightIndex));
+            String munroCategory = munroData.get(categoryIndex);
+            String munroName = munroData.get(nameIndex);
+            String munroGrid = munroData.get(gridIndex);
+
+            Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
+            munrosData.add(munro);
         }
 
         return munrosData;
