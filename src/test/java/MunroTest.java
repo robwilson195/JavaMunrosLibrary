@@ -3,7 +3,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class MunoTest {
+public class MunroTest {
 
     Munro munro;
 
@@ -19,7 +19,7 @@ public class MunoTest {
 
     @Test
     public void munroHasHeight() {
-        assertEquals(2505.5, munro.getHeightInMetres());
+        assertEquals(2505.5, munro.getHeightInMetres(), 0.1);
     }
 
     @Test
@@ -29,7 +29,7 @@ public class MunoTest {
 
     @Test
     public void munroHasGridReference() {
-        assertEquals("Fake Munro", munro.getGridReference());
+        assertEquals("NN12345", munro.getGridReference());
     }
 
 
