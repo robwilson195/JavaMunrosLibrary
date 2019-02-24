@@ -114,7 +114,7 @@ public class MunroLibrary {
 
         if (criteria.containsKey("hillCategory")) {
             munroStream = munroStream
-                    .filter(munro -> munro.getHillCategory().equals("MUN"));
+                    .filter(munro -> munro.getHillCategory().equals(criteria.get("hillCategory")));
         }
 
         results = munroStream.collect(Collectors.toList());

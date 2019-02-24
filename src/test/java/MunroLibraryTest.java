@@ -60,5 +60,15 @@ public class MunroLibraryTest {
         assertEquals(1344.53, results.get(0).getHeightInMetres(), 0.001);
     }
 
+    @Test
+    public void canSortInHeightDescendingOrderWithCategoryFilterAndResultLength() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("hillCategory", "TOP");
+        criteria.put("resultLength", "6");
+        List<Munro> results = munroLibrary.heightDescending(criteria);
+        assertEquals(1106.0, results.get(results.size()-1).getHeightInMetres(), 0.001);
+        assertEquals(1221.0, results.get(0).getHeightInMetres(), 0.001);
+    }
+
 
 }
