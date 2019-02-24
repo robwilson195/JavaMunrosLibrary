@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -100,4 +101,11 @@ public class MunroLibrary {
     public String getCsvFileName() {
         return csvFileName;
     }
+
+    public ArrayList<Munro> heightDescending(HashMap<String, String> criteria) {
+        ArrayList<Munro> results = new ArrayList<>();
+        return results;
+    }
+
 }
+
