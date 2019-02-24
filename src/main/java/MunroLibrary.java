@@ -97,7 +97,7 @@ public class MunroLibrary {
     public List<Munro> heightDescending(HashMap<String, String> criteria) {
         List<Munro> results;
 
-
+        this.validateCriteria(criteria);
 
         Stream<Munro> munroStream = this.munros.stream()
                 .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed());
@@ -111,6 +111,8 @@ public class MunroLibrary {
     public List<Munro> nameAscending(HashMap<String, String> criteria) {
         List <Munro> results;
 
+        this.validateCriteria(criteria);
+
         Stream<Munro> munroStream = this.munros.stream()
                 .sorted(Comparator.comparing(Munro::getName));
 
@@ -121,6 +123,8 @@ public class MunroLibrary {
 
     public List<Munro> nameDescending(HashMap<String, String> criteria) {
         List <Munro> results;
+
+        this.validateCriteria(criteria);
 
         Stream<Munro> munroStream = this.munros.stream()
                 .sorted(Comparator.comparing(Munro::getName).reversed());
