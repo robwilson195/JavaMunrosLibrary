@@ -24,6 +24,7 @@ public class MunroLibraryTest {
 
     @Test
     public void libraryHasCsvFileName() {
+
         assertEquals("munrotab.csv", munroLibrary.getCsvFileName());
     }
 
@@ -55,7 +56,7 @@ public class MunroLibraryTest {
         HashMap<String, String> criteria = new HashMap<>();
         criteria.put("hillCategory", "MUN");
         List<Munro> results = munroLibrary.heightDescending(criteria);
-        assertEquals(1174.0, results.get(results.size()-1).getHeightInMetres(), 0.001);
+        assertEquals(915.76, results.get(results.size()-1).getHeightInMetres(), 0.001);
         assertEquals(1344.53, results.get(0).getHeightInMetres(), 0.001);
     }
 
