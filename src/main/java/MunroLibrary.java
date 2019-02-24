@@ -120,11 +120,20 @@ public class MunroLibrary {
         if (criteria.containsKey("maxHeight")) {
             double maxHeight = parseDouble(criteria.get("maxHeight"));
             munroStream = munroStream
-                    .filter(munro -> munro.getHeightInMetres() < maxHeight);
+                    .filter(munro -> munro.getHeightInMetres() <= maxHeight);
         }
 
+        if (criteria.containsKey("minHeight")) {
+            double minHeight = parseDouble(criteria.get("minHeight"));
+            munroStream = munroStream
+                    .filter(munro -> munro.getHeightInMetres() >= minHeight);
+        }
+
+
+        // Turning stream back in to results list.
         results = munroStream.collect(Collectors.toList());
 
+        // Limiting return length according to criteria.
         if (criteria.containsKey("resultLength")) {
             results = results.subList(0, parseInt(criteria.get("resultLength")));
         }
