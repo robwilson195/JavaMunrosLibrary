@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Double.parseDouble;
+import static java.lang.Integer.parseInt;
 
 public class MunroLibrary {
 
@@ -100,12 +101,20 @@ public class MunroLibrary {
         return csvFileName;
     }
 
-    public List<Munro> heightDescending(HashMap<String, String> criteria) {
+    //TODO: Refactor for dryness.
 
+    public List<Munro> heightDescending(HashMap<String, String> criteria) {
+        double minHeight;
+        double maxHeight;
+        String hillCategory;
 
         List<Munro> results = this.munros.stream()
                 .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed())
                 .collect(Collectors.toList());
+
+        if (criteria.containsKey("resultLength")) {
+            results = results.subList(0, parseInt(criteria.get("resultLength")));
+        }
 
         return results;
     }
