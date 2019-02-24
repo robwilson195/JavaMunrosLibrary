@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -32,8 +33,10 @@ public class MunroLibraryTest {
     }
 
     @Test
-    public void canSortInHeightDescendingOrderEmptyCriteria() {
+    public void canSortInHeightDescendingOrderNoCriteria() {
         HashMap<String, String> criteria = new HashMap<>();
-        ArrayList<Munro> results = munroLibrary.heightDescending(criteria);
+        List<Munro> results = munroLibrary.heightDescending(criteria);
+        assertEquals(901.7, results.get(results.size()-1).getHeightInMetres(), 0.001);
+        assertEquals(1344.53, results.get(0).getHeightInMetres(), 0.001);
     }
 }

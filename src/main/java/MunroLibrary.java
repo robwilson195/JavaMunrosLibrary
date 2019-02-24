@@ -1,9 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.Double.parseDouble;
 
@@ -102,8 +100,13 @@ public class MunroLibrary {
         return csvFileName;
     }
 
-    public ArrayList<Munro> heightDescending(HashMap<String, String> criteria) {
-        ArrayList<Munro> results = new ArrayList<>();
+    public List<Munro> heightDescending(HashMap<String, String> criteria) {
+
+
+        List<Munro> results = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed())
+                .collect(Collectors.toList());
+
         return results;
     }
 
