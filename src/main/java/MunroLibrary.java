@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -103,14 +104,56 @@ public class MunroLibrary {
         return csvFileName;
     }
 
-    //TODO: Refactor for dryness.
+    public List<Munro> heightAscending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getHeightInMetres));
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
 
     public List<Munro> heightDescending(HashMap<String, String> criteria) {
-
         List<Munro> results;
 
         Stream<Munro> munroStream = this.munros.stream()
                 .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed());
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    public List<Munro> nameAscending(HashMap<String, String> criteria) {
+        List <Munro> results;
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getName));
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    public List<Munro> nameDescending(HashMap<String, String> criteria) {
+        List <Munro> results;
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getName).reversed());
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+
+
+    // Receives open stream from specific sort type.
+    private List<Munro> standardQuery(HashMap<String, String> criteria, Stream<Munro> munroStream) {
+
+        List<Munro> results;
 
         // Filters by hill category
         if (criteria.containsKey("hillCategory")) {
@@ -131,7 +174,6 @@ public class MunroLibrary {
             munroStream = munroStream
                     .filter(munro -> munro.getHeightInMetres() >= minHeight);
         }
-
 
         // Turning stream back in to results list.
         results = munroStream.collect(Collectors.toList());

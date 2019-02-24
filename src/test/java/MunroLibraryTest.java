@@ -108,6 +108,14 @@ public class MunroLibraryTest {
         assertEquals(999.7, results.get(0).getHeightInMetres(), 0.001);
     }
 
+    @Test
+    public void canSortByNameAscending() {
+        HashMap<String, String> criteria = new HashMap<>();
+        List<Munro> results = munroLibrary.nameAscending(criteria);
+        assertEquals("Am Bodach", results.get(0).getName());
+        assertEquals("Stuchd an Lochain [Stuc an Lochain]", results.get(results.size()-1).getName());
+    }
+
 
 
 
