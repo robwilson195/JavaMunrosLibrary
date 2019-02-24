@@ -84,6 +84,8 @@ public class MunroLibrary {
     public List<Munro> heightAscending(HashMap<String, String> criteria) {
         List<Munro> results;
 
+        this.validateCriteria(criteria);
+
         Stream<Munro> munroStream = this.munros.stream()
                 .sorted(Comparator.comparing(Munro::getHeightInMetres));
 
@@ -94,6 +96,8 @@ public class MunroLibrary {
 
     public List<Munro> heightDescending(HashMap<String, String> criteria) {
         List<Munro> results;
+
+
 
         Stream<Munro> munroStream = this.munros.stream()
                 .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed());
@@ -124,6 +128,26 @@ public class MunroLibrary {
         results = standardQuery(criteria, munroStream);
 
         return results;
+    }
+
+    private Boolean validateCriteria(HashMap<String, String> criteria) {
+        boolean criteriaValidity = true;
+        if (criteria.containsKey("hillCategory")) {
+            String cat = criteria.get("hillCategory");
+            if (!(cat.equals("MUN") || cat.equals("TOP"))) {
+                System.out.println("Criteria Error: Field hillCategory must contain string value MUN or TOP.");
+                criteriaValidity = false;
+            }
+        }
+        if (criteria.containsKey("maxHeight") && criteria.containsKey("minHeight")) {
+            double min = parseDouble(criteria.get("minHeight"));
+            double max = parseDouble(criteria.get("maxHeight"));
+            if (min > max) {
+                System.out.println("Criteria Error: Field minHeight must not be greater than field maxHeight.");
+                criteriaValidity = false;
+            }
+        }
+        return criteriaValidity;
     }
 
 

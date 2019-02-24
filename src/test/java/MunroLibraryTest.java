@@ -156,5 +156,34 @@ public class MunroLibraryTest {
         assertEquals("Stob Ghabhar", results.get(0).getName());
     }
 
+    @Test
+    public void canPrintAppropriateErrorMessageForWrongHillCategory() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("maxHeight", "1150");
+        criteria.put("minHeight", "1000");
+        criteria.put("resultLength", "8");
+        criteria.put("hillCategory", "MON");
+        List<Munro> results = munroLibrary.heightAscending(criteria);
+    }
+
+    @Test
+    public void canPrintAppropriateErrorMessageForMaxLessThanMin() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("minHeight", "1150");
+        criteria.put("maxHeight", "1000");
+        criteria.put("resultLength", "8");
+        criteria.put("hillCategory", "MUN");
+        List<Munro> results = munroLibrary.heightAscending(criteria);
+    }
+
+    @Test
+    public void canPrintAppropriateErrorMessagesForBothErrorTypes() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("minHeight", "1150");
+        criteria.put("maxHeight", "1000");
+        criteria.put("resultLength", "8");
+        criteria.put("hillCategory", "MON");
+        List<Munro> results = munroLibrary.heightAscending(criteria);
+    }
 
 }
