@@ -13,7 +13,7 @@ public class MunroLibraryTest {
     MunroLibrary munroLibrary;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         munroLibrary = new MunroLibrary("munrotab.csv");
     }
 

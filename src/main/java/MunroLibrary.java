@@ -26,7 +26,7 @@ public class MunroLibrary {
         try (BufferedReader br = new BufferedReader(new FileReader("./" + this.csvFileName))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(",");
+                String[] values = line.split(",", -1); // limit compensates for empty fields.
                 csvData.add(Arrays.asList(values));
             }
         } catch (IOException e) {
@@ -55,14 +55,17 @@ public class MunroLibrary {
 
             List<String> munroData = csvData.get(i);
 
-            double munroHeight = parseDouble(munroData.get(heightIndex));
-            String munroCategory = munroData.get(categoryIndex);
-            String munroName = munroData.get(nameIndex);
-            String munroGrid = munroData.get(gridIndex);
-            // Filter out fields with no hillCategory and csv lines which are not hill entries at all.
-            if (!munroCategory.equals("") && munroData.size() == 29) {
-                Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
-                munrosData.add(munro);
+            // Filter out csvData that is not a hill entry at all
+            if (!munroData.get(0).equals("")) {
+                double munroHeight = parseDouble(munroData.get(heightIndex));
+                String munroCategory = munroData.get(categoryIndex);
+                String munroName = munroData.get(nameIndex);
+                String munroGrid = munroData.get(gridIndex);
+                // Filter out fields with no hillCategory
+                if (!munroCategory.equals("")) {
+                    Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
+                    munrosData.add(munro);
+                }
             }
         }
 
