@@ -134,6 +134,7 @@ public class MunroLibraryTest {
         criteria.put("minHeight", "1000");
         criteria.put("resultLength", "20");
         criteria.put("hillCategory", "TOP");
+
         List<Munro> results = munroLibrary.heightAscending(criteria);
 
         assertEquals(true, results.size() <= 20);
@@ -163,7 +164,9 @@ public class MunroLibraryTest {
         criteria.put("minHeight", "1000");
         criteria.put("resultLength", "8");
         criteria.put("hillCategory", "MON");
+        System.out.println("Error Test: ");
         List<Munro> results = munroLibrary.heightAscending(criteria);
+
     }
 
     @Test
@@ -173,6 +176,7 @@ public class MunroLibraryTest {
         criteria.put("maxHeight", "1000");
         criteria.put("resultLength", "8");
         criteria.put("hillCategory", "MUN");
+        System.out.println("Error Test: ");
         List<Munro> results = munroLibrary.heightAscending(criteria);
     }
 
@@ -183,7 +187,52 @@ public class MunroLibraryTest {
         criteria.put("maxHeight", "1000");
         criteria.put("resultLength", "8");
         criteria.put("hillCategory", "MON");
+        System.out.println("Error Test: ");
         List<Munro> results = munroLibrary.heightAscending(criteria);
     }
+
+    @Test
+    public void canUseCustomRequestToMakeRegularRequest() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("hillCategory", "MUN");
+        criteria.put("resultLength", "8");
+        criteria.put("sortCategory", "height");
+        criteria.put("sortDirection", "descending");
+        List<Munro> results = munroLibrary.customRequest(criteria);
+        assertEquals(1344.53, results.get(0).getHeightInMetres(), 0.001);
+        assertEquals(1221.0, results.get(results.size() - 1).getHeightInMetres(), 0.001);
+    }
+
+    @Test
+    public void canUseCustomRequestToMakeComplexRequest() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("maxHeight", "1100");
+        criteria.put("minHeight", "1000");
+        criteria.put("resultLength", "20");
+        criteria.put("hillCategory", "TOP");
+        criteria.put("sortCategory", "height");
+        criteria.put("sortDirection", "ascending");
+        List<Munro> results = munroLibrary.customRequest(criteria);
+
+        assertEquals(true, results.size() <= 20);
+        assertEquals(1024.3, results.get(results.size() - 1).getHeightInMetres(), 0.001);
+        assertEquals(1000.0, results.get(0).getHeightInMetres(), 0.001);
+    }
+
+
+    @Test
+    public void canUseCustomRequestToMakeComplexLayeredRequestHeightDescendingNameAscending() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("sortCategory", "height");
+        criteria.put("sortDirection", "descending");
+        criteria.put("secondarySortDirection", "ascending");
+        List<Munro> results = munroLibrary.customRequest(criteria);
+
+        assertEquals(true, results.get(8).getHeightInMetres() == results.get(9).getHeightInMetres());
+        assertEquals("Aonach Mor", results.get(8).getName());
+        assertEquals("Ben Nevis - Carn Dearg NW Top (new GR)", results.get(9).getName());
+    }
+
+
 
 }

@@ -81,6 +81,175 @@ public class MunroLibrary {
         return csvFileName;
     }
 
+    public List<Munro> customRequest(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        String primarySort = criteria.get("sortCategory");
+        String primarySortDirection = criteria.get("sortDirection");
+
+        if (!criteria.containsKey("secondarySortDirection")) {
+            if (primarySort.equals("height") && primarySortDirection.equals("descending")) {
+                results = heightDescending(criteria);
+                return results;
+            } else if (primarySort.equals("height") && primarySortDirection.equals("ascending")) {
+                results = heightAscending(criteria);
+                return results;
+            } else if (primarySort.equals("name") && primarySortDirection.equals("ascending")) {
+                results = nameAscending(criteria);
+                return results;
+            } else if (primarySort.equals("name") && primarySortDirection.equals("descending")) {
+                results = nameDescending(criteria);
+                return results;
+            } else {
+                results = new ArrayList<>();
+                return results;
+            }
+        } else if (criteria.get("secondarySortDirection").equals("ascending")){
+            if (primarySort.equals("height") && primarySortDirection.equals("descending")) {
+                results = heightDescendingNameAscending(criteria);
+                return results;
+            } else if (primarySort.equals("height") && primarySortDirection.equals("ascending")) {
+                results = heightAscendingNameAscending(criteria);
+                return results;
+            } else if (primarySort.equals("name") && primarySortDirection.equals("ascending")) {
+                results = nameAscendingHeightAscending(criteria);
+                return results;
+            } else if (primarySort.equals("name") && primarySortDirection.equals("descending")) {
+                results = nameDescendingHeightAscending(criteria);
+                return results;
+            } else {
+                results = new ArrayList<>();
+                return results;
+            }
+        } else if (criteria.get("secondarySortDirection").equals("descending")){
+            if (primarySort.equals("height") && primarySortDirection.equals("descending")) {
+                results = heightDescendingNameDescending(criteria);
+                return results;
+            } else if (primarySort.equals("height") && primarySortDirection.equals("ascending")) {
+                results = heightAscendingNameDescending(criteria);
+                return results;
+            } else if (primarySort.equals("name") && primarySortDirection.equals("ascending")) {
+                results = nameAscendingHeightDescending(criteria);
+                return results;
+            } else if (primarySort.equals("name") && primarySortDirection.equals("descending")) {
+                results = nameDescendingHeightDescending(criteria);
+                return results;
+            } else {
+                results = new ArrayList<>();
+                return results;
+            }
+        } else {
+            results = new ArrayList<>();
+            return results;
+        }
+    }
+
+    private List<Munro> heightDescendingNameAscending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed().thenComparing(Munro::getName));
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    private List<Munro> heightAscendingNameAscending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getHeightInMetres).thenComparing(Munro::getName));
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    private List<Munro> nameAscendingHeightAscending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getName).thenComparing(Munro::getHeightInMetres));
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    private List<Munro> nameDescendingHeightAscending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getName).reversed().thenComparing(Munro::getHeightInMetres));
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    private List<Munro> heightDescendingNameDescending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed().thenComparing(Munro::getName).reversed());
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    private List<Munro> heightAscendingNameDescending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getHeightInMetres).thenComparing(Munro::getName).reversed());
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    private List<Munro> nameAscendingHeightDescending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getName).thenComparing(Munro::getHeightInMetres).reversed());
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    private List<Munro> nameDescendingHeightDescending(HashMap<String, String> criteria) {
+        List<Munro> results;
+
+        this.validateCriteria(criteria);
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getName).reversed().thenComparing(Munro::getHeightInMetres).reversed());
+
+        results = standardQuery(criteria, munroStream);
+
+        return results;
+    }
+
+    // The below functions become unnecessary with the addition of customRequest and its supporting
+    // functions, however users might still prefer them if a layered request is not required.
     public List<Munro> heightAscending(HashMap<String, String> criteria) {
         List<Munro> results;
 
