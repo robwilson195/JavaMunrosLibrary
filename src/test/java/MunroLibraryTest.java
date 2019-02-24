@@ -70,5 +70,25 @@ public class MunroLibraryTest {
         assertEquals(1221.0, results.get(0).getHeightInMetres(), 0.001);
     }
 
+    @Test
+    public void canSortInHeightDescendingOrderWithMaxHeight() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("maxHeight", "1000");
+        List<Munro> results = munroLibrary.heightDescending(criteria);
+//        ArrayList<Double> heights = new ArrayList<>();
+//        for (Munro mun : results) {
+//            heights.add(mun.getHeightInMetres());
+//        }
+//
+//        for (double num : heights) {
+//            System.out.println(num);
+//        }
+
+        assertEquals(915.76, results.get(results.size()-1).getHeightInMetres(), 0.001);
+        assertEquals(999.7, results.get(0).getHeightInMetres(), 0.001);
+    }
+
+
+
 
 }

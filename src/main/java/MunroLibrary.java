@@ -117,6 +117,12 @@ public class MunroLibrary {
                     .filter(munro -> munro.getHillCategory().equals(criteria.get("hillCategory")));
         }
 
+        if (criteria.containsKey("maxHeight")) {
+            double maxHeight = parseDouble(criteria.get("maxHeight"));
+            munroStream = munroStream
+                    .filter(munro -> munro.getHeightInMetres() < maxHeight);
+        }
+
         results = munroStream.collect(Collectors.toList());
 
         if (criteria.containsKey("resultLength")) {
