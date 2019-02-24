@@ -116,9 +116,37 @@ public class MunroLibraryTest {
         assertEquals("Stuchd an Lochain [Stuc an Lochain]", results.get(results.size()-1).getName());
     }
 
+    @Test
+    public void canSortInHeightAscendingOrderWithMaxHeightAndMinHeightAndHillCategoryAndResultLength() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("maxHeight", "1100");
+        criteria.put("minHeight", "1000");
+        criteria.put("resultLength", "20");
+        criteria.put("hillCategory", "TOP");
+        List<Munro> results = munroLibrary.heightAscending(criteria);
 
+        assertEquals(true, results.size() <= 20);
+        assertEquals(1100.0, results.get(results.size() - 1).getHeightInMetres(), 0.001);
+        assertEquals(1000.1, results.get(0).getHeightInMetres(), 0.001);
+    }
 
+    // Realised this sort by name is difficult to test since java's Comparator.comparing function does not
+    // ignore apostrophes while excel does. This made it difficult for me to know what the 'expected'
+    // responses were. Decided to ignore since ignoring the apostrophes or not is subjective.
+    @Ignore
+    @Test
+    public void canSortInNameDescendingOrderWithMaxHeightAndMinHeightAndHillCategoryAndResultLength() {
+        HashMap<String, String> criteria = new HashMap<>();
+        criteria.put("maxHeight", "1150");
+        criteria.put("minHeight", "1000");
+        criteria.put("resultLength", "8");
+        criteria.put("hillCategory", "MUN");
+        List<Munro> results = munroLibrary.nameDescending(criteria);
 
+        assertEquals(true, results.size() <= 8);
+        assertEquals("Sgurr Choinnich Mor", results.get(results.size() - 1).getName());
+        assertEquals("Stob Ghabhar", results.get(0).getName());
+    }
 
 
 }
