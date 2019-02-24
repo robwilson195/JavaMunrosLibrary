@@ -1,7 +1,6 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
-import java.util.function.Function;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,54 +16,29 @@ public class MunroLibrary {
 
         this.csvFileName = fileName;
         this.munros = new ArrayList<>();
-        this.munros = getData();
+        this.munros = getDataUpdated();
 
 
     }
 
-    private ArrayList<Munro> getData(){
-
-
+    public ArrayList<Munro> getDataUpdated() {
         List<List<String>> csvData = new ArrayList<>();
-        try (Scanner scanner = new Scanner(new File("./" + this.csvFileName))) {
-            while (scanner.hasNextLine()) {
-                csvData.add(this.getRecordFromLine(scanner.nextLine()));
+        try (BufferedReader br = new BufferedReader(new FileReader("./" + this.csvFileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(",");
+                csvData.add(Arrays.asList(values));
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //TODO: Work out why only approx 181 entries are being imported. Probably memory limitation of List.
-
-//        The following was used while experimenting with the results from the csv file.
-//        System.out.println(csvData.get(1).get(0));
-//        System.out.println(csvData.get(1).get(8));
-//        System.out.println(csvData.get(1));
-//        System.out.println(csvData.get(8));
-//        System.out.println("category "+ csvData.get(8).get(18));
-//        System.out.println("no category " + csvData.get(8).get(19));
-//        System.out.println("post 1997 " + csvData.get(8).get(27));
-//        System.out.println(csvData.get(181));
 
         return this.generateMunros(csvData);
 
     }
 
-    private List<String> getRecordFromLine(String line) {
-        List<String> values = new ArrayList<>();
-        try (Scanner rowScanner = new Scanner(line)) {
-            rowScanner.useDelimiter(",");
-            while (rowScanner.hasNext()) {
-                values.add(rowScanner.next());
-            }
-        }
-        return values;
-    }
-
     private ArrayList<Munro> generateMunros(List<List<String>> csvData) {
 
-        // This first section should circumvent issues with new csv files having different column order,
-        // provided the naming is the same. It also removes the first entry.
         // NOTE: Need to add 1 for now, due to presence of comma in some fields causing extra columns.
         // TODO: Compensate for commas in field entries.
 
@@ -77,8 +51,7 @@ public class MunroLibrary {
 
         ArrayList<Munro> munrosData = new ArrayList<>();
 
-        // Limit to 180 is a temporary limitation until memory limitation is circumvented.
-        for (int i=0; i<180; i++) {
+        for (int i=0; i<csvData.size(); i++) {
 
             List<String> munroData = csvData.get(i);
 
@@ -86,7 +59,8 @@ public class MunroLibrary {
             String munroCategory = munroData.get(categoryIndex);
             String munroName = munroData.get(nameIndex);
             String munroGrid = munroData.get(gridIndex);
-            if (!munroCategory.equals("")) {
+            // Filter out fields with no hillCategory and csv lines which are not hill entries at all.
+            if (!munroCategory.equals("") && munroData.size() == 29) {
                 Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
                 munrosData.add(munro);
             }

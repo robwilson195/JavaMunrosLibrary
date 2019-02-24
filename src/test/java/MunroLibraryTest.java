@@ -17,10 +17,10 @@ public class MunroLibraryTest {
         munroLibrary = new MunroLibrary("munrotab.csv");
     }
 
-//    @Test
-//    public void importDataExperiment() {
-//        munroLibrary.getData();
-//    }
+    @Test
+    public void importDataExperiment() {
+        munroLibrary.getDataUpdated();
+    }
 
     @Test
     public void libraryHasCsvFileName() {
