@@ -103,6 +103,7 @@ public class MunroLibrary {
         return results;
     }
 
+    // See note in test file RE 'Comparator.comparing' treatment of apostrophes.
     public List<Munro> nameAscending(HashMap<String, String> criteria) {
         List <Munro> results;
 
