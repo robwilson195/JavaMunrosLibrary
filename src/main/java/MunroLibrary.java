@@ -84,9 +84,10 @@ public class MunroLibrary {
             String munroCategory = munroData.get(categoryIndex);
             String munroName = munroData.get(nameIndex);
             String munroGrid = munroData.get(gridIndex);
-
-            Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
-            munrosData.add(munro);
+            if (munroCategory == "MUN" || munroCategory == "TOP") {
+                Munro munro = new Munro(munroName, munroHeight, munroCategory, munroGrid);
+                munrosData.add(munro);
+            }
         }
 
         return munrosData;
