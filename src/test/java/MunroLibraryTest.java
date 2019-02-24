@@ -37,7 +37,7 @@ public class MunroLibraryTest {
     public void canSortInHeightDescendingOrderNoCriteria() {
         HashMap<String, String> criteria = new HashMap<>();
         List<Munro> results = munroLibrary.heightDescending(criteria);
-        assertEquals(901.7, results.get(results.size()-1).getHeightInMetres(), 0.001);
+        assertEquals(915.76, results.get(results.size()-1).getHeightInMetres(), 0.001);
         assertEquals(1344.53, results.get(0).getHeightInMetres(), 0.001);
     }
 
@@ -47,7 +47,7 @@ public class MunroLibraryTest {
         criteria.put("resultLength", "10");
         List<Munro> results = munroLibrary.heightDescending(criteria);
         assertEquals(10, results.size());
-        assertEquals(1174.0, results.get(results.size()-1).getHeightInMetres(), 0.001);
+        assertEquals(1165.0, results.get(results.size()-1).getHeightInMetres(), 0.001);
         assertEquals(1344.53, results.get(0).getHeightInMetres(), 0.001);
     }
 

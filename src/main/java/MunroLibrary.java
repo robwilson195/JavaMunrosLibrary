@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
@@ -105,18 +106,22 @@ public class MunroLibrary {
     //TODO: Refactor for dryness.
 
     public List<Munro> heightDescending(HashMap<String, String> criteria) {
-        double minHeight;
-        double maxHeight;
-        String hillCategory;
 
-        List<Munro> results = this.munros.stream()
-                .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed())
-                .collect(Collectors.toList());
+        List<Munro> results;
+
+        Stream<Munro> munroStream = this.munros.stream()
+                .sorted(Comparator.comparing(Munro::getHeightInMetres).reversed());
+
+        if (criteria.containsKey("hillCategory")) {
+            munroStream = munroStream
+                    .filter(munro -> munro.getHillCategory().equals("MUN"));
+        }
+
+        results = munroStream.collect(Collectors.toList());
 
         if (criteria.containsKey("resultLength")) {
             results = results.subList(0, parseInt(criteria.get("resultLength")));
         }
-
         return results;
     }
 
